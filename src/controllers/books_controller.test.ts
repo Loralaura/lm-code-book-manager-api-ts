@@ -139,12 +139,22 @@ describe("DELETE /api/v1/books/{bookId} endpoint", () => {
 		// Arrange
 		const mockDeleteBook = jest
 			.spyOn(bookService, "deleteBook")
-			.mockResolvedValue(dummyBookData[1].bookId);
-
+			.mockResolvedValue(1);
 		// Act
 		const res = await request(app).delete("/api/v1/books/2");
 
 		// Assert
 		expect(res.statusCode).toEqual(200);
+	});
+
+	test("status code successfully 404 for a book that is not found", async () => {
+		// Arrange
+
+		jest.spyOn(bookService, "deleteBook").mockResolvedValue(0);
+		// Act
+		const res = await request(app).delete("/api/v1/books/77");
+
+		// Assert
+		expect(res.statusCode).toEqual(404);
 	});
 });
